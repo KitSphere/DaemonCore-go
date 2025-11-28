@@ -1,15 +1,15 @@
 package main
 
-import  "time"
+import "time"
 
 func    init () {
 	DaemonRegister = []*Daemon {
 		&Daemon {
-			Name: "Daemon 01", Code: Daemon01, StartupGrace: time.Second*5,
+			Name: "Daemon 01", Program: Daemon01, StartupGrace: time.Second*5,
 			ShutdownGrace:time.Second*5,
 		},
 		&Daemon {
-			Name: "Daemon 02", Code: Daemon02, StartupGrace: time.Second*5,
+			Name: "Daemon 02", Program: Daemon02, StartupGrace: time.Second*5,
 			ShutdownGrace:time.Second*5,
 		},
 	}

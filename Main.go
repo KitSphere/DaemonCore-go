@@ -62,7 +62,7 @@ func    main () {
 	xb05 := make (chan bool , 1)
 	for _ , xc10 := range DaemonRegister {
 		/***1***/
-		if xc10.Code == nil {
+		if xc10.Program == nil {
 			xd05 := fmt.Sprintf (
 				`PROJECT: Daemon %s: Skipping (Daemon has no program to run)`,
 				xc10.Name ,
@@ -93,7 +93,7 @@ func    main () {
 				xb05 <- true
 			} ( )
 			xc10.State = 1
-			xd05 := xc10.Code (xc10.clap, xc10.flap)
+			xd05 := xc10.Program (xc10.clap, xc10.flap)
 			xc10.State = 2
 			xd10 := map[string]string {  }
 			xd10 ["ExctnOtcmCode"] = "200"
@@ -177,7 +177,7 @@ func    main () {
 //============================================================================================//
 type    Daemon struct  {
 	Name   string
-	Code   func (<-  chan map[string]string, chan <- map[string]string) (error)
+	Program  func  (<-  chan map[string]string, chan <- map[string]string) (error)
 	State  uint64  // 0 - Initial; 1 - Running; 2 - Done
 	StartupGrace     time.Duration
 	ShutdownGrace    time.Duration
