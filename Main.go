@@ -15,9 +15,9 @@ import  "time"
 
 func    main () {
 	/***1***/
-	Output_Logg ("OUT", "PROJECT: Starting up")
+	Output_Logg ("OUT", "Main", "PROJECT: Starting up")
 	if DaemonRegister == nil || len(DaemonRegister) == 0 {
-		Output_Logg ("OUT", "PROJECT: No Daemon(s) to run. Shutting down now")
+		Output_Logg ("OUT", "Main", "PROJECT: No Daemon(s) to run. Shutting down now")
 		return
 	}
 	/***2***/
@@ -32,7 +32,7 @@ func    main () {
 			xd17 := fmt.Sprintf (
 				`PROJECT: Daemon %s: Shutdown signalledd`, xd10.Name,
 			)
-			Output_Logg ("OUT", xd17)
+			Output_Logg ("OUT", "Main", xd17)
 			xd20 := make (chan bool, 1)
 			if xd10.ShutdownGrace != 0{
 				go func () {
@@ -46,7 +46,7 @@ func    main () {
 						xg05 := fmt.Sprintf (
 							`PROJECT: Daemon %s: Encountered error [%s]`, xd10.Name, xf05["ExctnOtcmNote"],
 						)
-						Output_Logg ("ERR", xg05)
+						Output_Logg ("ERR", "Main", xg05)
 						return
 					}
 				}
@@ -55,7 +55,7 @@ func    main () {
 			xd25 := fmt.Sprintf (
 				`PROJECT: Daemon %s: Shutdown successful`, xd10.Name,
 			)
-			Output_Logg ("OUT", xd25)
+			Output_Logg ("OUT", "Main", xd25)
 		}
 	} ( )
 	/***3***/
@@ -67,7 +67,7 @@ func    main () {
 				`PROJECT: Daemon %s: Skipping (Daemon has no program to run)`,
 				xc10.Name ,
 			)
-			Output_Logg ("OUT", xd05)
+			Output_Logg ("OUT", "Main", xd05)
 			continue
 		}
 		/***2***/
@@ -76,7 +76,7 @@ func    main () {
 		xc25 := fmt.Sprintf (
 			`PROJECT: Daemon %s: Starting up... Please wait`, xc10.Name,
 		)
-		Output_Logg ("OUT", xc25)
+		Output_Logg ("OUT", "Main", xc25)
 		/***3***/
 		go func ( ) {
 			defer func (  ) {
@@ -119,7 +119,7 @@ func    main () {
 						`PROJECT: Daemon %s: Startup failed [%s]`,
 						xc10.Name , xe05 ["StartupNote"],
 					)
-					Output_Logg ("ERR", xf05)
+					Output_Logg ("ERR", "Main", xf05)
 					return
 				}
 				break
@@ -129,13 +129,13 @@ func    main () {
 					`PROJECT: Daemon %s: Startup failed [%s]`,
 					xc10.Name , "Startup grace period expired",
 				)
-				Output_Logg ("ERR", xe10)
+				Output_Logg ("ERR", "Main", xe10)
 				return
 			}
 		}
 		/***5***/
 		xc35 := fmt.Sprintf (`PROJECT: Daemon %s: Up and running`, xc10.Name)
-		Output_Logg ("OUT", xc35)
+		Output_Logg ("OUT", "Main", xc35)
 	}
 	/***4***/
 	xb10 := make (chan os.Signal, 1 )
@@ -150,13 +150,15 @@ func    main () {
 								xi05 := fmt.Sprintf (
 									`PROJECT: Daemon %s: Encountered error [%s]`, xf10.Name , xh10["ExctnOtcmNote"],
 								)
-								Output_Logg ("ERR", xi05)
+								Output_Logg (
+									"ERR", "Main", xi05,
+								)
 								return
 							}
 							xh15 := fmt.Sprintf (
 								`PROJECT: Daemon %s: Finished`, xf10.Name,
 							)
-							Output_Logg ("OUT", xh15)
+							Output_Logg ("OUT", "Main", xh15)
 						}
 						default: {}
 					}
@@ -183,10 +185,10 @@ type    Daemon struct  {
 	clap   chan map[string]string
 	flap   chan map[string]string
 }
-func    Output_Logg (Type, Output string) {
+func    Output_Logg (Type, Source, Output string) {
 	Type  = strings.ToLower (Type)
 	xb05 := fmt.Sprintf (
-		`[%s] %s`, time.Now ().In (time.FixedZone("TTT", TimeZoneSecondOffset)).Format ("2006-01-02 15:04:05.000 -07:00"),Output,
+		`[%s//%s] %s`, time.Now ().In (time.FixedZone("TTT", TimeZoneSecondOffset)).Format ("2006-01-02 15:04:05.000 -07:00"), Source, Output,
 	)
 	if Type == "out" {
 		os.Stdout.Write ([ ]byte (xb05 + "\n") )
