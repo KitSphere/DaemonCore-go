@@ -1,5 +1,10 @@
 package main
 
+/*
+	Name: DaemonCore-go
+	Version: 0.0.2
+*/
+
 import  "fmt"
 import  "os"
 import  "os/signal"
