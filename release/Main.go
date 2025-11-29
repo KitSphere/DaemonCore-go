@@ -84,7 +84,7 @@ func    main () {
 				if xe05 ==  nil { return }
 				xc10.State = 2
 				xe10 := fmt.Sprintf (
-					`Paniced [%v : %s]`, xe05, debug.Stack (),
+					`Paniced [%v : %s]`, xe05, string(debug.Stack ()),
 				)
 				xe15 := map[string]string {}
 				xe15 ["ExctnOtcmCode"] = "500"
